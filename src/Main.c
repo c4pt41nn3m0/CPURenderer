@@ -3,15 +3,20 @@
 #include "RenderLoop.h"
 
 bool IsRunning = false;
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
+
+SDL_Window* Window = NULL;
+SDL_Renderer* Renderer = NULL;
+
 int WindowPosX = 0;
 int WindowPosY = 0;
 int WindowSizeX = 800;
 int WindowSizeY = 600;
 
+uint32_t* ColorBuffer = NULL;
+SDL_Texture* ColorBufferTexture = NULL;
 
-bool initialize_window(void)
+
+bool InitializeWindow(void)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -22,18 +27,18 @@ bool initialize_window(void)
 	// Create SDL window
 	WindowPosX = SDL_WINDOWPOS_CENTERED;
 	WindowPosY = SDL_WINDOWPOS_CENTERED;
-	window = SDL_CreateWindow("Renderer", WindowPosX, WindowPosY, WindowSizeX, WindowSizeY, SDL_WINDOW_BORDERLESS);
+	Window = SDL_CreateWindow("Renderer", WindowPosX, WindowPosY, WindowSizeX, WindowSizeY, SDL_WINDOW_BORDERLESS);
 
-	if (!window)
+	if (!Window)
 	{
 		fprintf(stderr, "Error Creating SDL Window \n");
 		return false;
 	}
 	
 	// Create an SDL renderer 
-	renderer = SDL_CreateRenderer(window, -1, 0);
+	Renderer = SDL_CreateRenderer(Window, -1, 0);
 
-	if (!renderer)
+	if (!Renderer)
 	{
 		fprintf(stderr, "Error Creating SDL Renderer \n");
 		return false;
@@ -46,23 +51,26 @@ int main(int argc, char* argv[])
 {
 
 	// Initialization
-	IsRunning = initialize_window();
+	IsRunning = InitializeWindow();
 
 	if (IsRunning)
 	{
 		printf("SDL Initialized");
 	}
 
-	// Setup
-	setup();
+	// Setup and allocate resources
+	Setup();
 
 	// Lifecycle Loop
 	while (IsRunning)
 	{
-		process_input();
-		update();
-		draw();
+		ProcessInput();
+		Update();
+		Draw();
 	}
+
+	// Destroy allocated resources
+	Destroy();
 
 	return 0;
 }

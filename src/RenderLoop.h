@@ -1,12 +1,16 @@
+#pragma once
+
 #ifndef RENDER_LOOP
 #define RENDER_LOOP
 
-extern void setup(void);
+extern void Setup(void);
 
-extern void process_input(void);
+extern void ProcessInput(void);
 
-extern void update(void);
+extern void Update(void);
 
-extern void draw(void);
+extern void Draw(void);
+
+extern void Destroy(void);
 
 #endif // RENDER_LOOP

@@ -94,11 +94,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Render.c" />
     <ClCompile Include="src\Main.c" />
     <ClCompile Include="src\RenderLoop.c" />
     <ClCompile Include="src\RenderLoop.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Render.h" />
     <ClInclude Include="src\GlobalIncludes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

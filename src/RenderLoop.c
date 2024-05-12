@@ -1,21 +1,29 @@
 #include "GlobalIncludes.h"
 #include "RenderLoop.h"
+#include "Render.h"
 
-void setup(void)
+void Setup(void)
 {
-	// TODO
+	// Allocate Color Buffer Memory
+	ColorBuffer = (uint32_t*)malloc(sizeof(uint32_t) * WindowSizeX * WindowSizeY);
+	
+	// Initialize SDL_Texture 
+	CreateColorBufferTexture();
 }
 
-void process_input(void)\
+void ProcessInput(void)
 {
+	// Poll SDL events
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
 	switch (event.type)
 	{
+		// Close button clicked
 		case SDL_QUIT:
 			IsRunning = false;
 			break;
+		// Escape key pressed
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 			{
@@ -25,17 +33,36 @@ void process_input(void)\
 	}
 }
 
-void update(void)
+void Update(void)
 {
 	// TODO
 }
 
-void draw(void)
+void Draw(void)
 {
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	// Render clear color
+	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+	SDL_RenderClear(Renderer);
 
-	//TODO render whatever we want
+	// Copy ColorBuffer to SDL_Texture
+	RenderColorBuffer();
 
-	SDL_RenderPresent(renderer);
+	// Clear our color buffer to input color
+	ClearColorBuffer(0xFFFFFFFF);
+
+	// Send data to SDL backbuffer
+	SDL_RenderPresent(Renderer);
+}
+
+void Destroy(void)
+{
+	free(ColorBuffer);
+
+	SDL_DestroyTexture(ColorBufferTexture);
+	
+	SDL_DestroyRenderer(Renderer);
+	
+	SDL_DestroyWindow(Window);
+	
+	SDL_Quit();
 }
