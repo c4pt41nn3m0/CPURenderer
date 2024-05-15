@@ -11,6 +11,7 @@ int WindowPosX = 0;
 int WindowPosY = 0;
 int WindowSizeX = 800;
 int WindowSizeY = 600;
+bool Fullscreen = true;
 
 uint32_t* ColorBuffer = NULL;
 SDL_Texture* ColorBufferTexture = NULL;
@@ -24,9 +25,14 @@ bool InitializeWindow(void)
 		return false;
 	}
 
-	// Create SDL window
+	// Query Display Resolution
+	SDL_DisplayMode DisplayMode;
+	SDL_GetCurrentDisplayMode(0, &DisplayMode);
+	WindowSizeX = DisplayMode.w;
+	WindowSizeY = DisplayMode.h;
 	WindowPosX = SDL_WINDOWPOS_CENTERED;
 	WindowPosY = SDL_WINDOWPOS_CENTERED;
+	// Create Window
 	Window = SDL_CreateWindow("Renderer", WindowPosX, WindowPosY, WindowSizeX, WindowSizeY, SDL_WINDOW_BORDERLESS);
 
 	if (!Window)
@@ -42,6 +48,11 @@ bool InitializeWindow(void)
 	{
 		fprintf(stderr, "Error Creating SDL Renderer \n");
 		return false;
+	}
+
+	if (Fullscreen == true)
+	{
+		SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN);
 	}
 
 	return true;

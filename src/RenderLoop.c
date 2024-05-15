@@ -29,6 +29,10 @@ void ProcessInput(void)
 			{
 				IsRunning = false;
 			}
+			if (event.key.keysym.sym == SDLK_F11)
+			{
+				ToggleFullscreen();
+			}
 			break;
 	}
 }
@@ -43,6 +47,9 @@ void Draw(void)
 	// Render clear color
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
 	SDL_RenderClear(Renderer);
+
+	DrawGrid(0x00000000);
+	DrawRectangle(100, 100, 640, 480, 0xFFFF0000);
 
 	// Copy ColorBuffer to SDL_Texture
 	RenderColorBuffer();
