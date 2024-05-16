@@ -1,5 +1,5 @@
-#include "GlobalIncludes.h"
 #include "Render.h"
+#include "Display.h"
 
 void ClearColorBuffer(uint32_t InClearColor)
 {
@@ -10,7 +10,6 @@ void ClearColorBuffer(uint32_t InClearColor)
 			ColorBuffer[(WindowSizeX * y) + x] = InClearColor;
 		}
 	}
-	
 }
 
 void CreateColorBufferTexture(void)

@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "GlobalIncludes.h" 
+#include "Display.h" 
 #include "RenderLoop.h"
 
 bool IsRunning = false;

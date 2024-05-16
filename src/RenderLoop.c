@@ -1,6 +1,6 @@
-#include "GlobalIncludes.h"
 #include "RenderLoop.h"
 #include "Render.h"
+#include "Display.h"
 
 void Setup(void)
 {

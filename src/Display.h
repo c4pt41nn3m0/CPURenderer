@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef GLOBAL_INCLUDES_H
-#define GLOBAL_INCLUDES_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <stdint.h>
 #include <stdbool.h>

@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef RENDER_H
+#define RENDER_H
 
-#include "GlobalIncludes.h"
+#include <stdint.h>
 
 extern void ClearColorBuffer(uint32_t InClearColor);
 
