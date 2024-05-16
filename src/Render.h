@@ -5,16 +5,16 @@
 
 #include <stdint.h>
 
-extern void ClearColorBuffer(uint32_t InClearColor);
+void ClearColorBuffer(uint32_t InClearColor);
 
-extern void CreateColorBufferTexture(void);
+void CreateColorBufferTexture(void);
 
-extern void RenderColorBuffer(void);
+void RenderColorBuffer(void);
 
-extern void ToggleFullscreen(void);
+void ToggleFullscreen(void);
 
-extern void DrawGrid(uint32_t InGridColor);
+void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColor);
 
-extern void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColor);
+void DrawPixel(int X, int Y, uint32_t Color);
 
 #endif

@@ -37,27 +37,9 @@ void ToggleFullscreen(void)
 	}
 }
 
-void DrawGrid(uint32_t InGridColor)
-{
-	for (int y = 0; y < WindowSizeY; y++)
-	{
-		for (int x = 0; x < WindowSizeX; x++)
-		{
-			if (y % 10 == 0)
-			{
-				ColorBuffer[(WindowSizeX * y) + x] = InGridColor;
-			}
-			if (x % 10 == 0)
-			{
-				ColorBuffer[(WindowSizeX * y) + x] = InGridColor;
-			}
-		}
-	}
-}
-
 void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColor)
 {
-	if ((PosX > WindowSizeX) || (PosY > WindowSizeY))
+	if ((PosX < 0) || (PosY < 0) || (PosX > (WindowSizeX - 1)) || (PosY > (WindowSizeY - 1)))
 	{
 		return;
 	}
@@ -65,12 +47,34 @@ void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColo
 	
 	for (int y = PosY; y < WindowSizeY; y++)
 	{
-		for (int x = PosX; x < WindowSizeX; x++)
+		if (y < (PosY + SizeY))
 		{
-			if (y < (PosY + SizeY) && x < (PosX + SizeX))
+			for (int x = PosX; x < WindowSizeX; x++)
 			{
-				ColorBuffer[(WindowSizeX * y) + x] = InRectColor;
+				if (x < (PosX + SizeX))
+				{
+					ColorBuffer[(WindowSizeX * y) + x] = InRectColor;
+				}
+
+				else
+				{
+					break;
+				}
 			}
 		}
+		else
+		{
+			break;
+		}
 	}
+}
+
+void DrawPixel(int PosX, int PosY, uint32_t Color)
+{
+	if ((PosX < 0) || (PosY < 0) ||(PosX > WindowSizeX - 1) || (PosY > WindowSizeY - 1))
+	{
+		return;
+	}
+
+	ColorBuffer[(WindowSizeY * PosY) + PosX] = Color;
 }

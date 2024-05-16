@@ -3,14 +3,14 @@
 #ifndef RENDER_LOOP
 #define RENDER_LOOP
 
-extern void Setup(void);
+void Setup(void);
 
-extern void ProcessInput(void);
+void ProcessInput(void);
 
-extern void Update(void);
+void Update(void);
 
-extern void Draw(void);
+void Render(void);
 
-extern void Destroy(void);
+void Destroy(void);
 
 #endif // RENDER_LOOP

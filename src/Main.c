@@ -21,15 +21,18 @@ bool InitializeWindow(void)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
+		fprintf(stderr, SDL_GetError());
 		fprintf(stderr, "Error Initializing SDL \n");
 		return false;
 	}
 
-	// Query Display Resolution
+	// Query display resolution
 	SDL_DisplayMode DisplayMode;
 	SDL_GetCurrentDisplayMode(0, &DisplayMode);
+	// Set window size equal to display resolution
 	WindowSizeX = DisplayMode.w;
 	WindowSizeY = DisplayMode.h;
+	// Set window position as centered
 	WindowPosX = SDL_WINDOWPOS_CENTERED;
 	WindowPosY = SDL_WINDOWPOS_CENTERED;
 	// Create Window
@@ -37,7 +40,8 @@ bool InitializeWindow(void)
 
 	if (!Window)
 	{
-		fprintf(stderr, "Error Creating SDL Window \n");
+		fprintf(stderr, SDL_GetError());
+		fprintf(stderr,"Error Creating SDL Window \n");
 		return false;
 	}
 	
@@ -46,6 +50,7 @@ bool InitializeWindow(void)
 
 	if (!Renderer)
 	{
+		fprintf(stderr, SDL_GetError());
 		fprintf(stderr, "Error Creating SDL Renderer \n");
 		return false;
 	}
@@ -77,7 +82,7 @@ int main(int argc, char* argv[])
 	{
 		ProcessInput();
 		Update();
-		Draw();
+		Render();
 	}
 
 	// Destroy allocated resources

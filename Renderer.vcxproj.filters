@@ -27,12 +27,18 @@
     <ClCompile Include="src\Render.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Vector.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "RenderLoop.h"
 #include "Render.h"
 #include "Display.h"
+#include "Vector.h"
 
 void Setup(void)
 {
@@ -9,6 +10,18 @@ void Setup(void)
 	
 	// Initialize SDL_Texture 
 	CreateColorBufferTexture();
+
+	// Populate array of vectors
+	for (float x = -1; x <= 1; x += 0.25)
+	{
+		for (float y = -1; y <= 1; y += 0.25)
+		{
+			for (float z = -1; z <= 1; z += 0.25)
+			{
+				vec3_t NewPoint = { x, y, z };
+			}
+		}
+	}
 }
 
 void ProcessInput(void)
@@ -42,20 +55,19 @@ void Update(void)
 	// TODO
 }
 
-void Draw(void)
+void Render(void)
 {
 	// Render clear color
-	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 	SDL_RenderClear(Renderer);
 
-	DrawGrid(0x00000000);
-	DrawRectangle(100, 100, 640, 480, 0xFFFF0000);
+	DrawRectangle(100, 100, 100, 100, 0xFFFF0000);
 
 	// Copy ColorBuffer to SDL_Texture
 	RenderColorBuffer();
 
 	// Clear our color buffer to input color
-	ClearColorBuffer(0xFFFFFFFF);
+	ClearColorBuffer(0x00000000);
 
 	// Send data to SDL backbuffer
 	SDL_RenderPresent(Renderer);
