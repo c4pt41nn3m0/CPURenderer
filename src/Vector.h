@@ -5,19 +5,25 @@
 
 typedef struct
 {
-	float x;
-	float y;
+	double x;
+	double y;
 
 }vec2_t;
 
 typedef struct
 {
-	float x;
-	float y;
-	float z;
+	double x;
+	double y;
+	double z;
 
 }vec3_t;
 
-// TODO declare operations with vectors
+// TODO Declare operations with vectors
+
+// Rotation Functions
+
+vec3_t Vec3_Rotate_X(vec3_t V, double Angle);
+vec3_t Vec3_Rotate_Y(vec3_t V, double Angle);
+vec3_t Vec3_Rotate_Z(vec3_t V, double Angle);
 
 #endif

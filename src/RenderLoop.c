@@ -11,7 +11,8 @@ void Setup(void)
 	// Initialize SDL_Texture 
 	CreateColorBufferTexture();
 
-	// Populate array of vectors
+	// Populate array of vector points for display
+	/*
 	for (float x = -1; x <= 1; x += 0.25)
 	{
 		for (float y = -1; y <= 1; y += 0.25)
@@ -22,6 +23,7 @@ void Setup(void)
 			}
 		}
 	}
+	*/
 }
 
 void ProcessInput(void)
@@ -57,16 +59,12 @@ void Update(void)
 
 void Render(void)
 {
-	// Render clear color
-	SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
-	SDL_RenderClear(Renderer);
 
-	DrawRectangle(100, 100, 100, 100, 0xFFFF0000);
 
 	// Copy ColorBuffer to SDL_Texture
 	RenderColorBuffer();
 
-	// Clear our color buffer to input color
+	// Clear our color buffer to color
 	ClearColorBuffer(0x00000000);
 
 	// Send data to SDL backbuffer

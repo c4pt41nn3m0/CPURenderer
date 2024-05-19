@@ -12,6 +12,7 @@ int WindowPosY = 0;
 int WindowSizeX = 800;
 int WindowSizeY = 600;
 bool Fullscreen = true;
+float FOVFactor = 128;
 
 uint32_t* ColorBuffer = NULL;
 SDL_Texture* ColorBufferTexture = NULL;

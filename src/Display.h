@@ -17,6 +17,7 @@ extern int WindowPosY;
 extern int WindowSizeX;
 extern int WindowSizeY;
 extern bool Fullscreen;
+extern float FOVFactor;
 
 extern uint32_t* ColorBuffer;
 extern SDL_Texture* ColorBufferTexture;

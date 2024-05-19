@@ -39,11 +39,6 @@ void ToggleFullscreen(void)
 
 void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColor)
 {
-	if ((PosX < 0) || (PosY < 0) || (PosX > (WindowSizeX - 1)) || (PosY > (WindowSizeY - 1)))
-	{
-		return;
-	}
-
 	
 	for (int y = PosY; y < WindowSizeY; y++)
 	{
@@ -53,7 +48,7 @@ void DrawRectangle(int PosX, int PosY, int SizeX, int SizeY, uint32_t InRectColo
 			{
 				if (x < (PosX + SizeX))
 				{
-					ColorBuffer[(WindowSizeX * y) + x] = InRectColor;
+					DrawPixel(x, y, InRectColor);
 				}
 
 				else
@@ -76,5 +71,19 @@ void DrawPixel(int PosX, int PosY, uint32_t Color)
 		return;
 	}
 
-	ColorBuffer[(WindowSizeY * PosY) + PosX] = Color;
+	ColorBuffer[(WindowSizeX * PosY) + PosX] = Color;
+}
+
+vec2_t OrthoProject(vec3_t Point)
+{
+	vec2_t ProjectedPoint = {FOVFactor * Point.x, FOVFactor * Point.y};
+
+	return ProjectedPoint;
+}
+
+vec2_t PerspectiveProject(vec3_t Point)
+{
+	vec2_t ProjectedPoint = { FOVFactor * Point.x / Point.z, FOVFactor * Point.y / Point.z};
+
+	return ProjectedPoint;
 }
