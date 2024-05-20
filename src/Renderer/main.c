@@ -116,17 +116,24 @@ void update(void) {
 void render(void) {
     draw_grid();
 
-    //// Loop all projected triangles and render them
-    //for (int i = 0; i < N_MESH_FACES; i++) {
-    //    triangle_t current_triangle = triangles_to_render[i];
-    //    draw_rect(current_triangle.points[0].x, current_triangle.points[0].y, 3, 3, 0xFFFFFF00);
-    //    draw_rect(current_triangle.points[1].x, current_triangle.points[1].y, 3, 3, 0xFFFFFF00);
-    //    draw_rect(current_triangle.points[2].x, current_triangle.points[2].y, 3, 3, 0xFFFFFF00);
-    //}
+    // Loop all projected triangles and render them
+    for (int i = 0; i < N_MESH_FACES; i++) {
+        triangle_t current_triangle = triangles_to_render[i];
+        
+        // draw vertices
+        draw_rect(current_triangle.points[0].x, current_triangle.points[0].y, 3, 3, 0xFFFFFF00);
+        draw_rect(current_triangle.points[1].x, current_triangle.points[1].y, 3, 3, 0xFFFFFF00);
+        draw_rect(current_triangle.points[2].x, current_triangle.points[2].y, 3, 3, 0xFFFFFF00);
 
-    draw_line(100, 200, 300,  50, 0xFF00FF00);
-    draw_line(300, 50, 400, 600, 0xFF00FF00);
-    draw_line(400, 600, 100, 200, 0xFFFFFF00);
+        // draw edge lines
+        draw_triangle(
+            current_triangle.points[0].x, current_triangle.points[0].y,
+            current_triangle.points[1].x, current_triangle.points[1].y,
+            current_triangle.points[2].x, current_triangle.points[2].y, 
+            0xFF00FF00);
+    }
+
+
 
     render_color_buffer();
 
