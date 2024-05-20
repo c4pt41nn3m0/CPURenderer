@@ -17,6 +17,8 @@ float FOVFactor = 128;
 uint32_t* ColorBuffer = NULL;
 SDL_Texture* ColorBufferTexture = NULL;
 
+PrevFrameTime = 0;
+
 
 bool InitializeWindow(void)
 {

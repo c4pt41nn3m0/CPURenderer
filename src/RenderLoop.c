@@ -54,7 +54,12 @@ void ProcessInput(void)
 
 void Update(void)
 {
-	// TODO
+	// Lock till target frame time is reached
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), PrevFrameTime + FRAME_TARGET_TIME));
+	
+	PrevFrameTime = SDL_GetTicks();
+
+
 }
 
 void Render(void)
