@@ -13,8 +13,6 @@ vec3_t cube_rotation = { .x = 0, .y = 0, .z = 0 };
 
 float fov_factor = 640;
 
-bool fullscreen = true;
-
 bool is_running = false;
 int previous_frame_time = 0;
 
@@ -102,7 +100,6 @@ void update(void) {
             // Translate away from camera
             transformed_vertex.z -= camera_position.z;
 
-
             // Project the current vertex to vec2_t for screen space
             vec2_t projected_point = project(transformed_vertex);
 
@@ -119,13 +116,17 @@ void update(void) {
 void render(void) {
     draw_grid();
 
-    // Loop all projected triangles and render them
-    for (int i = 0; i < N_MESH_FACES; i++) {
-        triangle_t current_triangle = triangles_to_render[i];
-        draw_rect(current_triangle.points[0].x, current_triangle.points[0].y, 3, 3, 0xFFFFFF00);
-        draw_rect(current_triangle.points[1].x, current_triangle.points[1].y, 3, 3, 0xFFFFFF00);
-        draw_rect(current_triangle.points[2].x, current_triangle.points[2].y, 3, 3, 0xFFFFFF00);
-    }
+    //// Loop all projected triangles and render them
+    //for (int i = 0; i < N_MESH_FACES; i++) {
+    //    triangle_t current_triangle = triangles_to_render[i];
+    //    draw_rect(current_triangle.points[0].x, current_triangle.points[0].y, 3, 3, 0xFFFFFF00);
+    //    draw_rect(current_triangle.points[1].x, current_triangle.points[1].y, 3, 3, 0xFFFFFF00);
+    //    draw_rect(current_triangle.points[2].x, current_triangle.points[2].y, 3, 3, 0xFFFFFF00);
+    //}
+
+    draw_line(100, 200, 300,  50, 0xFF00FF00);
+    draw_line(300, 50, 400, 600, 0xFF00FF00);
+    draw_line(400, 600, 100, 200, 0xFFFFFF00);
 
     render_color_buffer();
 

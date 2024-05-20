@@ -7,6 +7,7 @@ uint32_t* color_buffer = NULL;
 SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
+bool fullscreen = false;
 
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -45,6 +46,10 @@ bool initialize_window(void) {
     {
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     }
+    else
+    {
+        SDL_SetWindowFullscreen(window, 0);
+    }
 
     return true;
 }
@@ -70,6 +75,30 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
             int current_y = y + j;
             draw_pixel(current_x, current_y, color);
         }
+    }
+}
+
+void draw_line(int x0, int y0, int x1, int y1, uint32_t color)
+{
+    int delta_x = x1 - x0;
+    int delta_y = y1 - y0;
+
+    // Take higher magnitude delta for stepping domain
+    int side_length = abs(delta_x) >= abs(delta_y) ? abs(delta_x) : abs(delta_y);
+    
+    float x_inc = delta_x / (float)side_length;
+    float y_inc = delta_y / (float)side_length;
+
+    float current_x = x0;
+    float current_y = y0;
+
+    for (int i = 0; i <= side_length; i++)
+    {
+        draw_pixel(round(current_x), round(current_y), color);
+        
+        //Step ahead with increment value(+ve or -ve)
+        current_x += x_inc;
+        current_y += y_inc;
     }
 }
 
@@ -108,6 +137,6 @@ void toggle_fullscreen(void)
     else
     {
         fullscreen = false;
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+        SDL_SetWindowFullscreen(window, 0);
     }
 }
