@@ -15,30 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.c">
+    <ClCompile Include="src\Renderer\display.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderLoop.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderLoop.c">
+    <ClCompile Include="src\Renderer\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Render.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Vector.c">
+    <ClCompile Include="src\Renderer\vector.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Display.h">
+    <ClInclude Include="src\Renderer\display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Vector.h">
+    <ClInclude Include="src\Renderer\vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

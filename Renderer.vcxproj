@@ -10,6 +10,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Renderer\display.c" />
+    <ClCompile Include="src\Renderer\main.c" />
+    <ClCompile Include="src\Renderer\vector.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Renderer\display.h" />
+    <ClInclude Include="src\Renderer\vector.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -97,18 +106,6 @@
       <Command>xcopy /y /d  "$(SolutionDir)thirdparty\SDL2-2.30.3\lib\$(Platform)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Render.c" />
-    <ClCompile Include="src\Main.c" />
-    <ClCompile Include="src\RenderLoop.c" />
-    <ClCompile Include="src\RenderLoop.h" />
-    <ClCompile Include="src\Vector.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Render.h" />
-    <ClInclude Include="src\Display.h" />
-    <ClInclude Include="src\Vector.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
