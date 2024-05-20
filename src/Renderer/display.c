@@ -8,6 +8,7 @@ SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
 bool fullscreen = false;
+projection_mode = 1;
 
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -145,5 +146,17 @@ void toggle_fullscreen(void)
     {
         fullscreen = false;
         SDL_SetWindowFullscreen(window, 0);
+    }
+}
+
+void toggle_projection(void)
+{
+    if (projection_mode == 0)
+    {
+        projection_mode = 1;
+    }
+    else
+    {
+        projection_mode = 0;
     }
 }

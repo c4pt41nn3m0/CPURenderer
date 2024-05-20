@@ -11,7 +11,7 @@ triangle_t triangles_to_render[N_MESH_FACES];
 vec3_t camera_position = { .x = 0, .y = 0, .z = -5 };
 vec3_t cube_rotation = { .x = 0, .y = 0, .z = 0 };
 
-float fov_factor = 640;
+float fov_factor = 100;
 
 bool is_running = false;
 int previous_frame_time = 0;
@@ -45,6 +45,10 @@ void process_input(void) {
             {
                 toggle_fullscreen();
             }
+            if (event.key.keysym.sym == SDLK_F1)
+            {
+                toggle_projection();
+            }
             break;
     }
 }
@@ -52,11 +56,27 @@ void process_input(void) {
 ////////////////////////////////////////////////////////////////////////////////
 // Function that receives a 3D vector and returns a projected 2D point
 ////////////////////////////////////////////////////////////////////////////////
-vec2_t project(vec3_t point) {
-    vec2_t projected_point = {
-        .x = (fov_factor * point.x) / point.z,
-        .y = (fov_factor * point.y) / point.z
-    };
+vec2_t project(vec3_t point, enum projection_type projection_mode) {
+
+    vec2_t projected_point;
+
+    switch (projection_mode)
+    {
+    case 0:
+        projected_point.x = (fov_factor * point.x);
+        projected_point.y = (fov_factor * point.y);
+        break;
+    case 1:
+        projected_point.x = (fov_factor * point.x) / point.z;
+        projected_point.y = (fov_factor * point.y) / point.z;
+        break;
+    default:
+        projected_point.x = (fov_factor * point.x) / point.z;
+        projected_point.y = (fov_factor * point.y) / point.z;
+        break;
+    }
+
+    
     return projected_point;
 }
 
@@ -101,7 +121,7 @@ void update(void) {
             transformed_vertex.z -= camera_position.z;
 
             // Project the current vertex to vec2_t for screen space
-            vec2_t projected_point = project(transformed_vertex);
+            vec2_t projected_point = project(transformed_vertex, projection_mode);
 
             //Scale and translate to middle of screen
             projected_point.x += (window_width / 2);

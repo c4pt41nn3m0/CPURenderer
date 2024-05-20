@@ -15,6 +15,12 @@ extern SDL_Texture* color_buffer_texture;
 extern int window_width;
 extern int window_height;
 extern bool fullscreen;
+enum projection_type
+{
+	ortho = 0,
+	perspective = 1
+};
+extern enum projection_type projection_mode;
 
 bool initialize_window(void);
 void draw_grid(void);
@@ -26,5 +32,6 @@ void render_color_buffer(void);
 void clear_color_buffer(uint32_t color);
 void destroy_window(void);
 void toggle_fullscreen(void);
+void toggle_projection(void);
 
 #endif
