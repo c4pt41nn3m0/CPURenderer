@@ -130,3 +130,6 @@ ipch/
 !thirdparty/**/**/*.lib
 !thirdparty/**/**/*.dll
 
+# Don't ignore assets
+!assets/*.obj
+

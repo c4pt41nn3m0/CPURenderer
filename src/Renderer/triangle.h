@@ -4,9 +4,9 @@
 #include "vector.h"
 
 typedef struct {
-	int a;
-	int b;
-	int c;
+	int a; // 1st face index
+	int b; // 2nd face index
+	int c; // 3rd face index
 } face_t;
 
 typedef struct {
