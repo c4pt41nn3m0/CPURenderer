@@ -159,3 +159,15 @@ void toggle_projection(void)
         projection_mode = 0;
     }
 }
+
+void toggle_backface_culling(void)
+{
+    if (backface_culling == true)
+    {
+        backface_culling = false;
+    }
+    else
+    {
+        backface_culling = true;
+    }
+}

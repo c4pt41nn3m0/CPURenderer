@@ -21,6 +21,8 @@ enum projection_type
 	perspective = 1
 };
 extern enum projection_type projection_mode;
+extern bool backface_culling;
+
 
 bool initialize_window(void);
 void draw_grid(void);
@@ -33,5 +35,6 @@ void clear_color_buffer(uint32_t color);
 void destroy_window(void);
 void toggle_fullscreen(void);
 void toggle_projection(void);
+void toggle_backface_culling(void);
 
 #endif
