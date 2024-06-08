@@ -25,6 +25,7 @@ bool backface_culling = true;
 
 vec3_t camera_position = { .x = 0, .y = 0, .z = 0 };
 float fov_factor = 640;
+float fov_factor_ortho = 160;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Setup function to initialize variables and game objects
@@ -44,13 +45,13 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     //load_cube_mesh_data();
-    load_obj_file_data("./././assets/f22.obj");
+    load_obj_file_data("./././assets/cube.obj");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Poll system events and handle keyboard input
 ///////////////////////////////////////////////////////////////////////////////
-void process_input(void) {
+void process_events(void) {
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
@@ -59,7 +60,9 @@ void process_input(void) {
             break;
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
+            {
                 is_running = false;
+            }
             if (event.key.keysym.sym == SDLK_F11)
             {
                 toggle_fullscreen();
@@ -86,8 +89,8 @@ vec2_t project(vec3_t point, enum projection_type projection_mode) {
     switch (projection_mode)
     {
     case 0:
-        projected_point.x = (fov_factor * point.x);
-        projected_point.y = (fov_factor * point.y);
+        projected_point.x = (fov_factor_ortho * point.x);
+        projected_point.y = (fov_factor_ortho * point.y);
         break;
     case 1:
         projected_point.x = (fov_factor * point.x) / point.z;
@@ -159,9 +162,12 @@ void update(void) {
 
             vec3_t vector_ab = vec3_sub(vector_b, vector_a);
             vec3_t vector_ac = vec3_sub(vector_c, vector_a);
+            vec3_normalize(&vector_ab);
+            vec3_normalize(&vector_ac);
 
             // Compute face normal for ABC
             vec3_t normal = vec3_cross(vector_ab, vector_ac); // Left-Handed Co-ordinate System
+            vec3_normalize(&normal);
             // Compute camera ray
             vec3_t camera_ray = vec3_sub(camera_position, vector_a);
             // Compute dot product between normal and camera ray
@@ -197,7 +203,7 @@ void update(void) {
 // Render function to draw objects on the display
 ///////////////////////////////////////////////////////////////////////////////
 void render(void) {
-    draw_grid();
+    //draw_grid();
 
     // Loop all projected triangles and render them
     int num_triangles = array_length(triangles_to_render);
@@ -246,7 +252,7 @@ int main(void) {
     setup();
 
     while (is_running) {
-        process_input();
+        process_events();
         update();
         render();
     }
