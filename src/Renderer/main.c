@@ -22,7 +22,6 @@ int previous_frame_time = 0;
 // Global variables for rendering
 ///////////////////////////////////////////////////////////////////////////////
 bool backface_culling = true;
-
 vec3_t camera_position = { .x = 0, .y = 0, .z = 0 };
 float fov_factor = 640;
 float fov_factor_ortho = 160;
@@ -45,6 +44,7 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     //load_cube_mesh_data();
+    // Loads the obj file data to mesh data
     load_obj_file_data("./././assets/cube.obj");
 }
 
@@ -211,10 +211,17 @@ void render(void) {
         triangle_t triangle = triangles_to_render[i];
 
         // Draw vertex points
-        draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
-        draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
-        draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
+        //draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
+        //draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
+        //draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
 
+        //Draw filled triangle
+        draw_filled_triangle(
+            triangle.points[0].x, triangle.points[0].y, // vertex A
+            triangle.points[1].x, triangle.points[1].y, // vertex B
+            triangle.points[2].x, triangle.points[2].y, // vertex C
+            0xFFFFFFFF
+        );
         // Draw unfilled triangle
         draw_triangle(
             triangle.points[0].x, triangle.points[0].y, // vertex A

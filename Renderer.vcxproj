@@ -23,6 +23,7 @@
     <ClInclude Include="src\Renderer\display.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
     <ClInclude Include="src\Renderer\triangle.h" />
+    <ClInclude Include="src\Renderer\utility.h" />
     <ClInclude Include="src\Renderer\vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
