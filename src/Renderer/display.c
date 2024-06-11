@@ -8,7 +8,6 @@ SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
 bool fullscreen = false;
-projection_mode = 1;
 
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -102,7 +101,7 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t color){
     }
 }
 
-void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color){
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
     draw_line(x0, y0, x1, y1, color);
     draw_line(x1, y1, x2, y2, color);
     draw_line(x2, y2, x0, y0, color);
@@ -132,7 +131,7 @@ void destroy_window(void) {
     SDL_Quit();
 }
 
-void toggle_fullscreen(void){
+void toggle_fullscreen(void) {
     if (fullscreen == false)
     {
         fullscreen = true;
@@ -145,24 +144,42 @@ void toggle_fullscreen(void){
     }
 }
 
-void toggle_projection(void){
-    if (projection_mode == 0)
+void toggle_projection(void) {
+    if (projection_type == PROJECTION_ORTHO)
     {
-        projection_mode = 1;
+        projection_type = PROJECTION_PERSPECTIVE;
     }
     else
     {
-        projection_mode = 0;
+        projection_type = PROJECTION_ORTHO;
     }
 }
 
-void toggle_backface_culling(void){
-    if (backface_culling == true)
+void toggle_backface_culling(void) {
+    if (culling_type == CULL_NONE)
     {
-        backface_culling = false;
+        culling_type = CULL_BACKFACE;
     }
     else
     {
-        backface_culling = true;
+        culling_type = CULL_NONE;
+    }
+}
+
+void cycle_render_method(void) {
+    switch (render_method)
+    {
+    case RENDER_WIRE:
+        render_method = RENDER_WIRE_VERTEX;
+        break;
+    case RENDER_WIRE_VERTEX:
+        render_method = RENDER_FILL_TRIANGLE;
+        break;
+    case RENDER_FILL_TRIANGLE:
+        render_method = RENDER_FILL_TRIANGLE_WIRE;
+        break;
+    case RENDER_FILL_TRIANGLE_WIRE:
+        render_method = RENDER_WIRE;
+        break;
     }
 }

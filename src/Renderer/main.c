@@ -21,7 +21,6 @@ int previous_frame_time = 0;
 ///////////////////////////////////////////////////////////////////////////////
 // Global variables for rendering
 ///////////////////////////////////////////////////////////////////////////////
-bool backface_culling = true;
 vec3_t camera_position = { .x = 0, .y = 0, .z = 0 };
 float fov_factor = 640;
 float fov_factor_ortho = 160;
@@ -30,6 +29,11 @@ float fov_factor_ortho = 160;
 // Setup function to initialize variables and game objects
 ///////////////////////////////////////////////////////////////////////////////
 void setup(void) {
+
+    projection_type = PROJECTION_PERSPECTIVE;
+    render_method = RENDER_WIRE;
+    culling_type = CULL_BACKFACE;
+
     // Allocate the required memory in bytes to hold the color buffer
     color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
 
@@ -75,6 +79,10 @@ void process_events(void) {
             {
                 toggle_backface_culling();
             }
+            if (event.key.keysym.sym == SDLK_F3)
+            {
+                cycle_render_method();
+            }
             break;
     }
 }
@@ -88,11 +96,11 @@ vec2_t project(vec3_t point, enum projection_type projection_mode) {
 
     switch (projection_mode)
     {
-    case 0:
+    case PROJECTION_ORTHO:
         projected_point.x = (fov_factor_ortho * point.x);
         projected_point.y = (fov_factor_ortho * point.y);
         break;
-    case 1:
+    case PROJECTION_PERSPECTIVE:
         projected_point.x = (fov_factor * point.x) / point.z;
         projected_point.y = (fov_factor * point.y) / point.z;
         break;
@@ -153,7 +161,7 @@ void update(void) {
             transformed_vertices[j] = transformed_vertex;
         }
         
-        if (backface_culling)
+        if (culling_type == CULL_BACKFACE)
         {
             // Backface culling
             vec3_t vector_a = transformed_vertices[0]; /*   A   */
@@ -185,7 +193,7 @@ void update(void) {
         // Projection
         for(int j = 0; j < 3; j++){
             // Project the current vertex
-            vec2_t projected_point = project(transformed_vertices[j], projection_mode);
+            vec2_t projected_point = project(transformed_vertices[j], projection_type);
 
             // Scale and translate the projected points to the middle of the screen
             projected_point.x += (window_width / 2);
@@ -210,25 +218,32 @@ void render(void) {
     for (int i = 0; i < num_triangles; i++) {
         triangle_t triangle = triangles_to_render[i];
 
-        // Draw vertex points
-        //draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
-        //draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
-        //draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
+        if (render_method == RENDER_FILL_TRIANGLE || render_method == RENDER_FILL_TRIANGLE_WIRE) {
+            //Draw filled triangle
+            draw_filled_triangle(
+                triangle.points[0].x, triangle.points[0].y, // vertex A
+                triangle.points[1].x, triangle.points[1].y, // vertex B
+                triangle.points[2].x, triangle.points[2].y, // vertex C
+                0xFFFFFFFF
+            );
+        }
 
-        //Draw filled triangle
-        draw_filled_triangle(
-            triangle.points[0].x, triangle.points[0].y, // vertex A
-            triangle.points[1].x, triangle.points[1].y, // vertex B
-            triangle.points[2].x, triangle.points[2].y, // vertex C
-            0xFFFFFFFF
-        );
-        // Draw unfilled triangle
-        draw_triangle(
-            triangle.points[0].x, triangle.points[0].y, // vertex A
-            triangle.points[1].x, triangle.points[1].y, // vertex B
-            triangle.points[2].x, triangle.points[2].y, // vertex C
-            0xFF00FF00
-        );
+        if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX || render_method == RENDER_FILL_TRIANGLE_WIRE) {
+            // Draw unfilled triangle
+            draw_triangle(
+                triangle.points[0].x, triangle.points[0].y, // vertex A
+                triangle.points[1].x, triangle.points[1].y, // vertex B
+                triangle.points[2].x, triangle.points[2].y, // vertex C
+                0xFF00FF00
+            );
+        }
+
+        if (render_method == RENDER_WIRE_VERTEX) {
+            // Draw vertex points
+            draw_rect(triangle.points[0].x, triangle.points[0].y, 4, 4, 0xFFFF0000); // vertex A
+            draw_rect(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000); // vertex B
+            draw_rect(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000); // vertex C
+        }
     }
 
     // Clear the array of triangles to render every frame loop

@@ -14,15 +14,23 @@ extern uint32_t* color_buffer;
 extern SDL_Texture* color_buffer_texture;
 extern int window_width;
 extern int window_height;
-extern bool fullscreen;
-enum projection_type
-{
-	ortho = 0,
-	perspective = 1
-};
-extern enum projection_type projection_mode;
-extern bool backface_culling;
 
+// Configuration types
+extern bool fullscreen;
+enum projection_type {
+	PROJECTION_ORTHO = 0,
+	PROJECTION_PERSPECTIVE = 1
+} projection_type;
+enum cull_type {
+	CULL_NONE = 0,
+	CULL_BACKFACE
+} culling_type;
+enum render_method {
+	RENDER_WIRE = 0,
+	RENDER_WIRE_VERTEX = 1,
+	RENDER_FILL_TRIANGLE = 2,
+	RENDER_FILL_TRIANGLE_WIRE = 3
+} render_method;
 
 bool initialize_window(void);
 void draw_grid(void);
@@ -36,5 +44,6 @@ void destroy_window(void);
 void toggle_fullscreen(void);
 void toggle_projection(void);
 void toggle_backface_culling(void);
+void cycle_render_method(void);
 
 #endif
