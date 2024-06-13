@@ -14,6 +14,7 @@
     <ClCompile Include="src\Renderer\array.c" />
     <ClCompile Include="src\Renderer\display.c" />
     <ClCompile Include="src\Renderer\main.c" />
+    <ClCompile Include="src\Renderer\matrix.c" />
     <ClCompile Include="src\Renderer\mesh.c" />
     <ClCompile Include="src\Renderer\triangle.c" />
     <ClCompile Include="src\Renderer\vector.c" />
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ClInclude Include="src\Renderer\array.h" />
     <ClInclude Include="src\Renderer\display.h" />
+    <ClInclude Include="src\Renderer\matrix.h" />
     <ClInclude Include="src\Renderer\mesh.h" />
     <ClInclude Include="src\Renderer\triangle.h" />
     <ClInclude Include="src\Renderer\utility.h" />
