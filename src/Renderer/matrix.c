@@ -1,8 +1,7 @@
 #include "matrix.h"
 #include "math.h"
 
-mat4_t mat4_identity(void)
-{
+mat4_t mat4_identity(void) {
     mat4_t identity = { {
         {1,0,0,0},
         {0,1,0,0},
@@ -13,8 +12,7 @@ mat4_t mat4_identity(void)
     return identity;
 }
 
-mat4_t mat4_make_scale(float sx, float sy, float sz)
-{
+mat4_t mat4_make_scale(float sx, float sy, float sz) {
     mat4_t scale = mat4_identity();
     scale.m[0][0] = sx;
     scale.m[1][1] = sy;
@@ -23,8 +21,7 @@ mat4_t mat4_make_scale(float sx, float sy, float sz)
     return scale;
 }
 
-mat4_t mat4_make_translation(float tx, float ty, float tz)
-{
+mat4_t mat4_make_translation(float tx, float ty, float tz) {
     mat4_t translate = mat4_identity();
     translate.m[0][3] = tx;
     translate.m[1][3] = ty;
@@ -33,8 +30,7 @@ mat4_t mat4_make_translation(float tx, float ty, float tz)
     return translate;
 }
 
-mat4_t mat4_make_rotation_x(float angle)
-{
+mat4_t mat4_make_rotation_x(float angle) {
     float c = cos(angle);
     float s = sin(angle);
 
@@ -47,8 +43,7 @@ mat4_t mat4_make_rotation_x(float angle)
     return rot_x;
 }
 
-mat4_t mat4_make_rotation_y(float angle)
-{
+mat4_t mat4_make_rotation_y(float angle) {
     float c = cos(angle);
     float s = sin(angle);
 
@@ -61,8 +56,7 @@ mat4_t mat4_make_rotation_y(float angle)
     return rot_y;
 }
 
-mat4_t mat4_make_rotation_z(float angle)
-{
+mat4_t mat4_make_rotation_z(float angle) {
     float c = cos(angle);
     float s = sin(angle);
 
@@ -85,4 +79,17 @@ vec4_t mat4_mul_vec4(mat4_t m, vec4_t v) {
     v4.w = m.m[3][0] * v.x + m.m[3][1] * v.y + m.m[3][2] * v.z + m.m[3][3] * v.w;
 
     return v4;
+}
+
+mat4_t mat4_mul_mat4(mat4_t a, mat4_t b) {
+    
+    mat4_t m;
+
+    for (int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++) {
+            m.m[i][j] = a.m[i][0] * b.m[0][j] + a.m[i][1] * b.m[1][j] + a.m[i][2] * b.m[2][j] + a.m[i][3] * b.m[3][j];
+        }
+    }
+
+    return m;
 }
