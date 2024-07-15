@@ -23,8 +23,12 @@ int previous_frame_time = 0;
 // Global variables for rendering
 ///////////////////////////////////////////////////////////////////////////////
 vec3_t camera_position = { .x = 0, .y = 0, .z = 0 };
-float fov_factor = 640;
-float fov_factor_ortho = 160;
+mat4_t proj_matrix;
+float fov = 0.0; 
+float aspect_ratio = 0.0;
+float znear = 0.0;
+float zfar = 0.0;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Setup function to initialize variables and game objects
@@ -46,6 +50,13 @@ void setup(void) {
         window_width,
         window_height
     );
+
+    // Initialize the projection matrix and projection variables
+    fov = M_PI/2.0; // 90 degrees in radians
+    aspect_ratio = (float)window_height/ (float)window_width;
+    znear = 0.05;
+    zfar = 5000;
+    proj_matrix = mat4_make_perspective(fov, aspect_ratio, znear, zfar);
 
     // Loads the cube values in the mesh data structure
     load_cube_mesh_data();
@@ -88,33 +99,6 @@ void process_events(void) {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Function that receives a 3D vector and returns a projected 2D point
-////////////////////////////////////////////////////////////////////////////////
-vec2_t project(vec3_t point, enum projection_type projection_mode) {
-
-    vec2_t projected_point;
-
-    switch (projection_mode)
-    {
-    case PROJECTION_ORTHO:
-        projected_point.x = (fov_factor_ortho * point.x);
-        projected_point.y = (fov_factor_ortho * point.y);
-        break;
-    case PROJECTION_PERSPECTIVE:
-        projected_point.x = (fov_factor * point.x) / point.z;
-        projected_point.y = (fov_factor * point.y) / point.z;
-        break;
-    default:
-        projected_point.x = (fov_factor * point.x) / point.z;
-        projected_point.y = (fov_factor * point.y) / point.z;
-        break;
-    }
-
-    
-    return projected_point;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // Update function frame by frame with a fixed time step
 ///////////////////////////////////////////////////////////////////////////////
@@ -135,8 +119,12 @@ void update(void) {
     mesh.rotation.y += 0.01;
     mesh.rotation.z += 0.01;
 
+    mesh.scale.x += 0.001;
+    mesh.scale.y += 0.001;
+    mesh.scale.z += 0.001;
+
     mesh.translation.x += 0.005;
-    mesh.translation.z = 5.0; 
+    mesh.translation.z = 5.0;
 
     // Scale matrix
     mat4_t scale_matrix = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
@@ -163,16 +151,8 @@ void update(void) {
         for (int j = 0; j < 3; j++) {
             vec4_t transformed_vertex = vec4_from_vec3(face_vertices[j]);
 
-            // Scale
-            //transformed_vertex = mat4_mul_vec4(scale_matrix, transformed_vertex);
-            // Rotate
-            //transformed_vertex = mat4_mul_vec4(rotation_matrix_x, transformed_vertex);
-            //transformed_vertex = mat4_mul_vec4(rotation_matrix_y, transformed_vertex);
-            //transformed_vertex = mat4_mul_vec4(rotation_matrix_z, transformed_vertex);
-            // Translate
-            //transformed_vertex = mat4_mul_vec4(translate_matrix, transformed_vertex);
-
             // Create a World matrix combining scale, rotation and translation matrices
+            // First scale then rotate then translate
             mat4_t world_matrix = mat4_identity();
             world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
@@ -213,17 +193,20 @@ void update(void) {
             }
         }
         
-        vec2_t projected_points[3];
+        vec4_t projected_points[3];
 
         // Projection
         for(int j = 0; j < 3; j++){
             // Project the current vertex
-            projected_points[j] = project(vec3_from_vec4(transformed_vertices[j]), projection_type);
+            projected_points[j] = mat4_mul_vec4_project(proj_matrix, transformed_vertices[j]);
 
-            // Scale and translate the projected points to the middle of the screen
+            // Scale projected points
+            projected_points[j].x *= (float)window_width / 2.0;
+            projected_points[j].y *= (float)window_height / 2.0;
+
+            // Translate the projected points to the middle of the screen
             projected_points[j].x += (window_width / 2);
             projected_points[j].y += (window_height / 2);
-
         }
 
         // Calculate average depth for each face after projection
@@ -243,15 +226,18 @@ void update(void) {
         array_push(triangles_to_render, projected_triangle);
     }
 
-    // A naive approach using painter's algorithm to sort triangles by their avg_depth
-    int num_triangles = array_length(triangles_to_render);
-    for (int i = 0; i < num_triangles; i++) {
-        for (int j = i; j < num_triangles; j++) {
-            if (triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth) {
-                // Swap triangles indexes
-                triangle_t temp = triangles_to_render[i];
-                triangles_to_render[i] = triangles_to_render[j];
-                triangles_to_render[j] = temp;
+    if (triangles_to_render != NULL)
+    {
+        // A naive approach using painter's algorithm to sort triangles by their avg_depth
+        int num_triangles = array_length(triangles_to_render);
+        for (int i = 0; i < num_triangles; i++) {
+            for (int j = i; j < num_triangles; j++) {
+                if (triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth) {
+                    // Swap triangles indexes
+                    triangle_t temp = triangles_to_render[i];
+                    triangles_to_render[i] = triangles_to_render[j];
+                    triangles_to_render[j] = temp;
+                }
             }
         }
     }

@@ -12,6 +12,29 @@ mat4_t mat4_identity(void) {
     return identity;
 }
 
+mat4_t mat4_make_perspective(float fov, float aspect, float znear, float zfar){
+    mat4_t perspective = {{{0}}};
+    perspective.m[0][0] = aspect * (1 / tan(fov / 2));
+    perspective.m[1][1] = 1 / tan(fov / 2);
+    perspective.m[2][2] = zfar / (zfar - znear);
+    perspective.m[2][3] = (-zfar * znear) / (zfar - znear);
+    perspective.m[3][2] = 1.0;
+    return perspective;
+}
+
+vec4_t mat4_mul_vec4_project(mat4_t mat_proj, vec4_t v){
+    vec4_t result = mat4_mul_vec4(mat_proj, v);
+
+    // perform perspective divide with original z-value(stored in w)
+    if (result.w != 0.0) {
+        result.x /= result.w;
+        result.y /= result.w;
+        result.z /= result.w;
+    }
+
+    return result;
+}
+
 mat4_t mat4_make_scale(float sx, float sy, float sz) {
     mat4_t scale = mat4_identity();
     scale.m[0][0] = sx;
