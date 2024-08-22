@@ -218,8 +218,8 @@ void update(void) {
         vec3_t light_direction = global_light.direction;
         vec3_normalize(&light_direction);
 
-        // Calculate the light shading intensity depending on the angle between the the light vector and face normal vector and then inverse it
-        float light_intensity_factor = 1.0 - vec3_dot(normal, light_direction);
+        // Calculate the light shading intensity depending on the angle between the the light vector and face normal vector and then invert it
+        float light_intensity_factor = -vec3_dot(normal, light_direction);
 
         // Calculate the triangle face color depending on the light shading intensity
         uint32_t triangle_color = light_apply_intensity(mesh_face.color, light_intensity_factor);
